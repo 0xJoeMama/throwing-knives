@@ -11,7 +11,6 @@ import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.item.Item
 import net.minecraft.item.ItemGroups
-import net.minecraft.item.ItemStack
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.registry.RegistryKeys
@@ -25,11 +24,11 @@ object ThrowingKnives : ModInitializer {
     private val logger = LoggerFactory.getLogger(MODID)
 
     val DIAMOND_THROWING_KNIFE: ThrowingKnifeItem =
-        ThrowingKnifeItem(Item.Settings().rarity(Rarity.UNCOMMON).maxCount(8))
+        ThrowingKnifeItem(0.5f, Item.Settings().rarity(Rarity.UNCOMMON).maxCount(8))
     val IRON_THROWING_KNIFE: ThrowingKnifeItem =
-        ThrowingKnifeItem(Item.Settings().rarity(Rarity.UNCOMMON).maxCount(8))
+        ThrowingKnifeItem(0.1f, Item.Settings().rarity(Rarity.UNCOMMON).maxCount(8))
     val GOLD_THROWING_KNIFE: ThrowingKnifeItem =
-        ThrowingKnifeItem(Item.Settings().rarity(Rarity.UNCOMMON).maxCount(8))
+        ThrowingKnifeItem(0.3f, Item.Settings().rarity(Rarity.UNCOMMON).maxCount(8))
     val THROWN_KNIFE: EntityType<ThrownKnifeEntity> =
         FabricEntityTypeBuilder.create<ThrownKnifeEntity>()
             .entityFactory(::ThrownKnifeEntity)
@@ -49,7 +48,9 @@ object ThrowingKnives : ModInitializer {
         Registry.register(Registries.ENTITY_TYPE, mkId("thrown_knife"), THROWN_KNIFE)
         this.logger.info("Fully initialized Throwing Knives")
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register {
-            it.add(ItemStack(DIAMOND_THROWING_KNIFE))
+            it.add { DIAMOND_THROWING_KNIFE }
+            it.add { IRON_THROWING_KNIFE }
+            it.add { GOLD_THROWING_KNIFE }
         }
     }
 }

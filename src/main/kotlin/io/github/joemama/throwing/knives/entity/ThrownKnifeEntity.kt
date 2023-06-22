@@ -1,43 +1,127 @@
 package io.github.joemama.throwing.knives.entity
 
 import io.github.joemama.throwing.knives.ThrowingKnives
-import net.minecraft.entity.EntityType
-import net.minecraft.entity.ItemEntity
-import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity
-import net.minecraft.item.Item
+import io.github.joemama.throwing.knives.item.ThrowingKnifeItem
+import net.minecraft.entity.*
+import net.minecraft.entity.data.DataTracker
+import net.minecraft.entity.data.TrackedData
+import net.minecraft.entity.data.TrackedDataHandlerRegistry
+import net.minecraft.entity.projectile.ProjectileUtil
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.hit.BlockHitResult
+import net.minecraft.util.hit.EntityHitResult
+import net.minecraft.util.hit.HitResult
+import net.minecraft.util.math.MathHelper
 import net.minecraft.world.World
+import java.util.*
+import kotlin.math.PI
+import kotlin.math.atan
+import kotlin.math.atan2
+import kotlin.math.pow
 
-class ThrownKnifeEntity(type: EntityType<out ThrownItemEntity>, world: World) : ThrownItemEntity(type, world) {
+class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(type, world), Ownable {
+    private var owner: LivingEntity? = null
+        set(value) {
+            field = value
+            this.ownerUid = value?.uuid
+        }
+    private var ownerUid: UUID? = null
+    var item: ItemStack
+        get() = this.dataTracker.get(ITEM)
+        set(value) = this.dataTracker.set(ITEM, value)
+
+    companion object {
+        val ITEM: TrackedData<ItemStack> =
+            DataTracker.registerData(ThrownKnifeEntity::class.java, TrackedDataHandlerRegistry.ITEM_STACK)
+    }
+
     constructor(world: World, stack: ItemStack, user: LivingEntity) : this(ThrowingKnives.THROWN_KNIFE, world) {
         this.owner = user
         this.item = stack
-        this.setPosition(user.eyePos.add(0.0, 0.1, 0.0))
-        this.velocity = user.rotationVector.normalize().multiply(1.4)
+        val normalizedLook = user.rotationVector.normalize()
+        this.setPosition(user.eyePos)
+        this.velocity = normalizedLook.multiply(1.4)
     }
 
-    override fun onBlockHit(bhr: BlockHitResult) {
+    override fun tick() {
+        super.tick()
+        this.setPosition(this.pos.add(this.velocity))
+        this.velocity = this.velocity.add(0.0, -0.03, 0.0)
+
+        if (this.velocity.lengthSquared() != 0.0) {
+            this.yaw = (atan2(this.velocity.x, this.velocity.z) * 180 / PI).toFloat()
+            this.pitch = (atan(
+                this.velocity.y * MathHelper.inverseSqrt(
+                    this.velocity.x.pow(2) +
+                            this.velocity.y.pow(2)
+                )
+            ) * 180 / PI).toFloat()
+        }
+
         if (this.isRemoved) {
             return
         }
 
+        val hit = ProjectileUtil.getCollision(this) { true } ?: return
+        when (hit.type) {
+            HitResult.Type.ENTITY -> {
+                val ehr = hit as EntityHitResult
+                if (ehr.entity is LivingEntity) {
+                    if (this.item.item is ThrowingKnifeItem) {
+                        ehr.entity.damage(
+                            this.damageSources.mobAttack(this.owner),
+                            (this.item.item as ThrowingKnifeItem).damage
+                        )
+                    }
+                    this.drop()
+                }
+            }
+
+            HitResult.Type.BLOCK -> this.onBlockHit(hit as BlockHitResult)
+            else -> {}
+        }
+    }
+
+    private fun drop() {
+        val item = ItemEntity(this.world, this.x, this.y, this.z, this.item)
+        world.spawnEntity(item)
+        this.world.playSound(null, this.blockPos, SoundEvents.ENTITY_ARROW_HIT, SoundCategory.BLOCKS, 0.5f, 1.0f)
+
+        this.discard()
+    }
+
+    private fun onBlockHit(bhr: BlockHitResult) {
         val pos = bhr.blockPos
         val state = this.world.getBlockState(pos)
 
         if (state.isIn(ThrowingKnives.SOFT_BLOCKS)) {
             // TODO: Stick to block
         } else {
-            val item = ItemEntity(this.world, this.x, this.y, this.z, this.stack)
-            world.spawnEntity(item)
-            this.world.playSound(null, pos, SoundEvents.ENTITY_ARROW_HIT, SoundCategory.BLOCKS, 0.5f, 1.0f)
-
-            this.discard()
+            this.drop()
         }
     }
 
-    override fun getDefaultItem(): Item = ThrowingKnives.DIAMOND_THROWING_KNIFE
+    override fun initDataTracker() {
+        this.dataTracker.startTracking(ITEM, ThrowingKnives.IRON_THROWING_KNIFE.defaultStack)
+    }
+
+    override fun readCustomDataFromNbt(nbt: NbtCompound) {
+        this.ownerUid = nbt.getUuid("Owner")
+        this.item = ItemStack.fromNbt(nbt.getCompound("Stack") ?: return)
+    }
+
+    override fun writeCustomDataToNbt(nbt: NbtCompound) {
+        this.owner?.let {
+            nbt.putUuid("Owner", it.uuid)
+        }
+        nbt.put("Stack", this.item.writeNbt(NbtCompound()))
+    }
+
+    override fun getOwner(): Entity? = this.owner ?: if (!this.world.isClient && this.ownerUid != null) {
+        (this.world as ServerWorld).getEntity(this.ownerUid)
+    } else null
 }

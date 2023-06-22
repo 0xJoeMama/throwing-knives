@@ -30,13 +30,17 @@ class ThrownKnifeEntityRenderer(ctx: Context) : EntityRenderer<ThrownKnifeEntity
         vertexConsumers: VertexConsumerProvider,
         light: Int
     ) {
+        if (entity.age < 2) {
+            return
+        }
+
         matrices.push()
         matrices.scale(0.5f, 0.5f, 0.5f)
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(entity.yaw + 90.0f))
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(45.0f - entity.pitch))
 
         this.itemRenderer.renderItem(
-           entity.stack,
+           entity.item,
             ModelTransformationMode.FIXED,
             light,
             OverlayTexture.DEFAULT_UV,

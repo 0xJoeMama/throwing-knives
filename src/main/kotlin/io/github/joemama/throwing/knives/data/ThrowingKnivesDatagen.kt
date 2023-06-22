@@ -4,6 +4,8 @@ import io.github.joemama.throwing.knives.ThrowingKnives
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider.TranslationBuilder
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider
 import net.minecraft.block.Blocks
@@ -22,6 +24,7 @@ object ThrowingKnivesDatagen : DataGeneratorEntrypoint {
         val pack = gen.createPack()
         pack.addProvider(::TagProvider)
         pack.addProvider(::ItemModelProvider)
+        pack.addProvider(::TranslationProvider)
     }
 
     class TagProvider(out: FabricDataOutput, reg: CompletableFuture<RegistryWrapper.WrapperLookup>) :
@@ -42,6 +45,14 @@ object ThrowingKnivesDatagen : DataGeneratorEntrypoint {
             items.register(ThrowingKnives.DIAMOND_THROWING_KNIFE, Models.GENERATED)
             items.register(ThrowingKnives.IRON_THROWING_KNIFE, Models.GENERATED)
             items.register(ThrowingKnives.GOLD_THROWING_KNIFE, Models.GENERATED)
+        }
+    }
+
+    class TranslationProvider(out: FabricDataOutput) : FabricLanguageProvider(out) {
+        override fun generateTranslations(translationBuilder: TranslationBuilder) {
+            translationBuilder.add(ThrowingKnives.DIAMOND_THROWING_KNIFE, "Diamond Throwing Knife")
+            translationBuilder.add(ThrowingKnives.IRON_THROWING_KNIFE, "Iron Throwing Knife")
+            translationBuilder.add(ThrowingKnives.GOLD_THROWING_KNIFE, "Gold Throwing Knife")
         }
     }
 }

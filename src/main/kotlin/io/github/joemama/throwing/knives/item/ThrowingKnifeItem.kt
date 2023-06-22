@@ -8,7 +8,7 @@ import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.world.World
 
-class ThrowingKnifeItem(settings: Settings): Item(settings) {
+class ThrowingKnifeItem(val damage: Float, settings: Settings): Item(settings) {
     override fun use(world: World, user: PlayerEntity, hand: Hand): TypedActionResult<ItemStack> {
         val stack = user.getStackInHand(hand)
         if (world.isClient) {
