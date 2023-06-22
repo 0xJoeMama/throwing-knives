@@ -25,7 +25,13 @@
   - screen goes completely dark
   - use lay down animation from bed?
   - fade out UI elements?
+  
+all effect durations should add to already applied effect's duration
 
 ## Custom crafting station for coating
 
 - also used for knife crafting?
+
+## Balancing
+
+- tweak damage values
