@@ -19,9 +19,13 @@
 - add texture (use iron knife as base)
 - set enemies on fire
 
-## Add effects
+## Add custom effects
 
 - sleep effect
-  - screen goes dark
-  - fade out UI elements too?
+  - screen goes completely dark
+  - use lay down animation from bed?
+  - fade out UI elements?
 
+## Custom crafting station for coating
+
+- also used for knife crafting?

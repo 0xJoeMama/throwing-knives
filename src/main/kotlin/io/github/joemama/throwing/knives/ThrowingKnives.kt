@@ -15,6 +15,7 @@ import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.registry.tag.TagKey
+import net.minecraft.sound.SoundEvent
 import net.minecraft.util.Identifier
 import net.minecraft.util.Rarity
 import org.slf4j.LoggerFactory
@@ -38,6 +39,7 @@ object ThrowingKnives : ModInitializer {
             .trackRangeBlocks(20)
             .dimensions(EntityDimensions.fixed(0.2f, 0.2f))
             .build()
+    val KNIFE_HIT_HARD: SoundEvent = SoundEvent.of(mkId("knife_hit_hard"))
 
     val SOFT_BLOCKS: TagKey<Block> = TagKey.of(RegistryKeys.BLOCK, mkId("soft_blocks"))
 
@@ -46,6 +48,7 @@ object ThrowingKnives : ModInitializer {
         Registry.register(Registries.ITEM, mkId("iron_throwing_knife"), IRON_THROWING_KNIFE)
         Registry.register(Registries.ITEM, mkId("gold_throwing_knife"), GOLD_THROWING_KNIFE)
         Registry.register(Registries.ENTITY_TYPE, mkId("thrown_knife"), THROWN_KNIFE)
+        Registry.register(Registries.SOUND_EVENT, mkId("knife_hit_hard"), KNIFE_HIT_HARD)
         this.logger.info("Fully initialized Throwing Knives")
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register {
             it.add { DIAMOND_THROWING_KNIFE }

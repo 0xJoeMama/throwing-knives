@@ -1,0 +1,8 @@
+{
+  "knife_hit_hard": {
+    "subtitle": "sound.throwing-knives.knife_hit",
+    "sounds": [
+      "throwing-knives:knife_hard_surface"
+    ]
+  }
+}

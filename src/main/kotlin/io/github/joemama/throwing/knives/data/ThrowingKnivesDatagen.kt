@@ -53,6 +53,10 @@ object ThrowingKnivesDatagen : DataGeneratorEntrypoint {
             translationBuilder.add(ThrowingKnives.DIAMOND_THROWING_KNIFE, "Diamond Throwing Knife")
             translationBuilder.add(ThrowingKnives.IRON_THROWING_KNIFE, "Iron Throwing Knife")
             translationBuilder.add(ThrowingKnives.GOLD_THROWING_KNIFE, "Gold Throwing Knife")
+
+        //TODO: no subtitle support in translation datagen?
+        //translationBuilder.add(ThrowingKnives.KNIFE_HIT_HARD, "Hit hard surface")
+
         }
     }
 }
