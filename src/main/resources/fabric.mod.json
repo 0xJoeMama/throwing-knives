@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "throwing-knives",
+	"version": "${version}",
+	"name": "throwing-knives",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/throwing-knives/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			{
+				"value": "io.github.joemama.throwing.knives.ThrowingKnives",
+				"adapter": "kotlin"
+			}
+		],
+		"client": [
+			{
+				"value": "io.github.joemama.throwing.knives.ThrowingKnivesClient",
+				"adapter": "kotlin"
+			}
+		],
+		"fabric-datagen": [
+			{
+				"value": "io.github.joemama.throwing.knives.data.ThrowingKnivesDatagen",
+				"adapter": "kotlin"
+			}
+		]
+	},
+	"mixins": [
+		"throwing-knives.mixins.json",
+		{
+			"config": "throwing-knives.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.14.21",
+		"minecraft": "~1.19.4",
+		"java": ">=17",
+		"fabric-api": "*",
+		"fabric-language-kotlin": ">=1.8.22"
+	}
+}

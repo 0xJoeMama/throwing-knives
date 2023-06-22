@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:clay",
+    "#minecraft:mineable/axe",
+    "#minecraft:wool",
+    "#minecraft:wool_carpets"
+  ]
+}
