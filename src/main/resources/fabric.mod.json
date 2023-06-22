@@ -2,16 +2,17 @@
 	"schemaVersion": 1,
 	"id": "throwing-knives",
 	"version": "${version}",
-	"name": "throwing-knives",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Throwing Knives",
+	"description": "A mod adding throwing knife variants to minecraft.",
 	"authors": [
-		"Me!"
+		"0xJoeMama",
+		"JR1811"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://jr1811.github.io/",
+		"sources": "https://github.com/0xJoeMama/throwing-knives"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/throwing-knives/icon.png",
 	"environment": "*",
 	"entrypoints": {
