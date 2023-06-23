@@ -44,15 +44,17 @@ object ThrowingKnivesDatagen : DataGeneratorEntrypoint {
             items.register(ThrowingKnives.DIAMOND_THROWING_KNIFE, Models.GENERATED)
             items.register(ThrowingKnives.IRON_THROWING_KNIFE, Models.GENERATED)
             items.register(ThrowingKnives.GOLD_THROWING_KNIFE, Models.GENERATED)
+            items.register(ThrowingKnives.NETHERITE_THROWING_KNIFE, Models.GENERATED)
         }
     }
 
     class TranslationProvider(out: FabricDataOutput) : FabricLanguageProvider(out) {
-        override fun generateTranslations(translationBuilder: TranslationBuilder) {
-            translationBuilder.add(ThrowingKnives.DIAMOND_THROWING_KNIFE, "Diamond Throwing Knife")
-            translationBuilder.add(ThrowingKnives.IRON_THROWING_KNIFE, "Iron Throwing Knife")
-            translationBuilder.add(ThrowingKnives.GOLD_THROWING_KNIFE, "Gold Throwing Knife")
-            translationBuilder.add("sound.throwing-knives.knife_hit", "Hit hard surface")
+        override fun generateTranslations(builder: TranslationBuilder) {
+            builder.add(ThrowingKnives.DIAMOND_THROWING_KNIFE, "Diamond Throwing Knife")
+            builder.add(ThrowingKnives.IRON_THROWING_KNIFE, "Iron Throwing Knife")
+            builder.add(ThrowingKnives.GOLD_THROWING_KNIFE, "Gold Throwing Knife")
+            builder.add(ThrowingKnives.NETHERITE_THROWING_KNIFE, "Netherite Throwing Knife")
+            builder.add("sound.throwing-knives.knife_hit", "Hit hard surface")
         }
     }
 }

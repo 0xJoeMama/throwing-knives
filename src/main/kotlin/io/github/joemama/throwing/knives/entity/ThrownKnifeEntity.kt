@@ -33,7 +33,7 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
             return this.ownerUid?.let { (this.world as ServerWorld).getEntity(it) } as? LivingEntity
         }
     private var ownerUid: UUID? = null
-    var item: ItemStack
+    var stack: ItemStack
         get() = this.dataTracker.get(ITEM)
         set(value) = this.dataTracker.set(ITEM, value)
 
@@ -52,7 +52,7 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
 
     constructor(world: World, stack: ItemStack, user: LivingEntity) : this(ThrowingKnives.THROWN_KNIFE, world) {
         this.ownerUid = user.uuid
-        this.item = stack
+        this.stack = stack
         this.setPosition(user.eyePos)
         this.velocity = user.rotationVector.normalize().multiply(1.2)
     }
@@ -68,11 +68,15 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
             HitResult.Type.BLOCK -> this.onBlockHit(hit as BlockHitResult)
             HitResult.Type.ENTITY -> {
                 val ehr = hit as EntityHitResult
-                if (this.item.item is ThrowingKnifeItem) {
+                if (this.stack.item is ThrowingKnifeItem) {
                     ehr.entity.damage(
                         this.damageSources.mobAttack(this.owner),
-                        (this.item.item as ThrowingKnifeItem).damage
+                        (this.stack.item as ThrowingKnifeItem).damage
                     )
+                    val item = this.stack.item
+                    if (item is ThrowingKnifeItem) {
+                        item.onHit(ehr.entity)
+                    }
                 }
                 this.drop()
             }
@@ -111,7 +115,7 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
     }
 
     private fun drop() {
-        val item = ItemEntity(this.world, this.x, this.y, this.z, this.item)
+        val item = ItemEntity(this.world, this.x, this.y, this.z, this.stack)
         world.spawnEntity(item)
         this.world.playSound(null, this.blockPos, ThrowingKnives.KNIFE_HIT_HARD, SoundCategory.BLOCKS, 0.3f, 1.0f)
 
@@ -138,14 +142,14 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
 
     override fun readCustomDataFromNbt(nbt: NbtCompound) {
         this.ownerUid = nbt.getUuid("Owner")
-        this.item = ItemStack.fromNbt(nbt.getCompound("Stack") ?: return)
+        this.stack = ItemStack.fromNbt(nbt.getCompound("Stack") ?: return)
     }
 
     override fun writeCustomDataToNbt(nbt: NbtCompound) {
         this.ownerUid?.let {
             nbt.putUuid("Owner", it)
         }
-        nbt.put("Stack", this.item.writeNbt(NbtCompound()))
+        nbt.put("Stack", this.stack.writeNbt(NbtCompound()))
     }
 
     override fun getOwner(): Entity? = this.owner

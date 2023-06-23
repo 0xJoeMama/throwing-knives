@@ -40,7 +40,7 @@ class ThrownKnifeEntityRenderer(ctx: Context) : EntityRenderer<ThrownKnifeEntity
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(45.0f - entity.pitch))
 
         this.itemRenderer.renderItem(
-           entity.item,
+           entity.stack,
             ModelTransformationMode.FIXED,
             light,
             OverlayTexture.DEFAULT_UV,

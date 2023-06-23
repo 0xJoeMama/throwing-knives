@@ -30,6 +30,10 @@ object ThrowingKnives : ModInitializer {
         ThrowingKnifeItem(0.1f, Item.Settings().rarity(Rarity.UNCOMMON).maxCount(8))
     val GOLD_THROWING_KNIFE: ThrowingKnifeItem =
         ThrowingKnifeItem(0.3f, Item.Settings().rarity(Rarity.UNCOMMON).maxCount(8))
+    val NETHERITE_THROWING_KNIFE: ThrowingKnifeItem =
+        ThrowingKnifeItem(1.0f, Item.Settings().rarity(Rarity.RARE).maxCount(4)) {
+            it.setOnFireFor(4)
+        }
     val THROWN_KNIFE: EntityType<ThrownKnifeEntity> =
         FabricEntityTypeBuilder.create<ThrownKnifeEntity>()
             .entityFactory(::ThrownKnifeEntity)
@@ -47,6 +51,7 @@ object ThrowingKnives : ModInitializer {
         Registry.register(Registries.ITEM, mkId("diamond_throwing_knife"), DIAMOND_THROWING_KNIFE)
         Registry.register(Registries.ITEM, mkId("iron_throwing_knife"), IRON_THROWING_KNIFE)
         Registry.register(Registries.ITEM, mkId("gold_throwing_knife"), GOLD_THROWING_KNIFE)
+        Registry.register(Registries.ITEM, mkId("netherite_throwing_knife"), NETHERITE_THROWING_KNIFE)
         Registry.register(Registries.ENTITY_TYPE, mkId("thrown_knife"), THROWN_KNIFE)
         Registry.register(Registries.SOUND_EVENT, mkId("knife_hit_hard"), KNIFE_HIT_HARD)
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register {
