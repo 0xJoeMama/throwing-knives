@@ -3,6 +3,7 @@ package io.github.joemama.throwing.knives
 import io.github.joemama.throwing.knives.entity.ThrownKnifeEntity
 import io.github.joemama.throwing.knives.item.ThrowingKnifeItem
 import net.fabricmc.api.ModInitializer
+import net.fabricmc.fabric.api.event.player.UseEntityCallback
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.block.Block
@@ -16,6 +17,7 @@ import net.minecraft.registry.Registry
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.registry.tag.TagKey
 import net.minecraft.sound.SoundEvent
+import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
 import net.minecraft.util.Rarity
 import org.slf4j.LoggerFactory
@@ -31,7 +33,7 @@ object ThrowingKnives : ModInitializer {
     val GOLD_THROWING_KNIFE: ThrowingKnifeItem =
         ThrowingKnifeItem(0.3f, Item.Settings().rarity(Rarity.UNCOMMON).maxCount(8))
     val NETHERITE_THROWING_KNIFE: ThrowingKnifeItem =
-        ThrowingKnifeItem(1.0f, Item.Settings().rarity(Rarity.RARE).maxCount(4)) {
+        ThrowingKnifeItem(1.0f, Item.Settings().rarity(Rarity.RARE).fireproof().maxCount(4)) {
             it.setOnFireFor(4)
         }
     val THROWN_KNIFE: EntityType<ThrownKnifeEntity> =
@@ -42,6 +44,7 @@ object ThrowingKnives : ModInitializer {
             .trackedUpdateRate(10)
             .trackRangeBlocks(20)
             .dimensions(EntityDimensions.fixed(0.2f, 0.2f))
+            .fireImmune()
             .build()
     val KNIFE_HIT_HARD: SoundEvent = SoundEvent.of(mkId("knife_hit_hard"))
 
@@ -59,6 +62,22 @@ object ThrowingKnives : ModInitializer {
             it.add { IRON_THROWING_KNIFE }
             it.add { GOLD_THROWING_KNIFE }
         }
+
+        UseEntityCallback.EVENT.register { player, world, hand, entity, _ ->
+            if (!world.isClient) {
+                if (entity is ThrownKnifeEntity && entity.age > 5) {
+                    player.itemCooldownManager.set(entity.stack.item, 20)
+                    player.giveItemStack(entity.stack)
+                    player.swingHand(hand, true)
+                    entity.discard()
+                }
+
+                ActionResult.SUCCESS
+            } else {
+                ActionResult.PASS
+            }
+        }
+
         this.logger.info("Fully initialized Throwing Knives")
     }
 }

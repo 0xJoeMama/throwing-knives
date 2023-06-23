@@ -6,11 +6,14 @@ import net.minecraft.entity.*
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.projectile.ProjectileUtil
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
+import net.minecraft.util.ActionResult
+import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.EntityHitResult
 import net.minecraft.util.hit.HitResult
@@ -121,6 +124,10 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
 
         this.discard()
     }
+
+    override fun canHit(): Boolean = true
+
+    override fun canBeHitByProjectile(): Boolean = false
 
     private fun onBlockHit(bhr: BlockHitResult) {
         val pos = bhr.blockPos

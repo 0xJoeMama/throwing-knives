@@ -12,6 +12,11 @@ import net.minecraft.world.World
 class ThrowingKnifeItem(val damage: Float, settings: Settings, val onHit: (Entity) -> Unit = {}): Item(settings) {
     override fun use(world: World, user: PlayerEntity, hand: Hand): TypedActionResult<ItemStack> {
         val stack = user.getStackInHand(hand)
+
+        if (user.itemCooldownManager.isCoolingDown(this)) {
+            return TypedActionResult.fail(stack)
+        }
+
         if (world.isClient) {
             return TypedActionResult.pass(stack)
         }
