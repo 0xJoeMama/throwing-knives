@@ -49,12 +49,12 @@ object ThrowingKnives : ModInitializer {
         Registry.register(Registries.ITEM, mkId("gold_throwing_knife"), GOLD_THROWING_KNIFE)
         Registry.register(Registries.ENTITY_TYPE, mkId("thrown_knife"), THROWN_KNIFE)
         Registry.register(Registries.SOUND_EVENT, mkId("knife_hit_hard"), KNIFE_HIT_HARD)
-        this.logger.info("Fully initialized Throwing Knives")
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register {
             it.add { DIAMOND_THROWING_KNIFE }
             it.add { IRON_THROWING_KNIFE }
             it.add { GOLD_THROWING_KNIFE }
         }
+        this.logger.info("Fully initialized Throwing Knives")
     }
 }
 
