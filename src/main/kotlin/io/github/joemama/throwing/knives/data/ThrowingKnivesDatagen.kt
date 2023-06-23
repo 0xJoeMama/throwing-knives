@@ -54,6 +54,7 @@ object ThrowingKnivesDatagen : DataGeneratorEntrypoint {
             builder.add(ThrowingKnives.IRON_THROWING_KNIFE, "Iron Throwing Knife")
             builder.add(ThrowingKnives.GOLD_THROWING_KNIFE, "Gold Throwing Knife")
             builder.add(ThrowingKnives.NETHERITE_THROWING_KNIFE, "Netherite Throwing Knife")
+            builder.add(ThrowingKnives.THROWN_KNIFE, "Thrown Knife")
             builder.add("sound.throwing-knives.knife_hit", "Hit hard surface")
         }
     }
