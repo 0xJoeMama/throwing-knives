@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider.TranslationBuilder
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider
 import net.minecraft.block.Blocks
@@ -53,10 +52,7 @@ object ThrowingKnivesDatagen : DataGeneratorEntrypoint {
             translationBuilder.add(ThrowingKnives.DIAMOND_THROWING_KNIFE, "Diamond Throwing Knife")
             translationBuilder.add(ThrowingKnives.IRON_THROWING_KNIFE, "Iron Throwing Knife")
             translationBuilder.add(ThrowingKnives.GOLD_THROWING_KNIFE, "Gold Throwing Knife")
-
-        //TODO: no subtitle support in translation datagen?
-        //translationBuilder.add(ThrowingKnives.KNIFE_HIT_HARD, "Hit hard surface")
-
+            translationBuilder.add("sound.throwing-knives.knife_hit", "Hit hard surface")
         }
     }
 }

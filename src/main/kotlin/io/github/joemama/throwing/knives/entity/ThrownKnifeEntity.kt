@@ -11,17 +11,16 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
-import net.minecraft.sound.SoundEvents
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.EntityHitResult
 import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.MathHelper
 import net.minecraft.world.World
+import org.joml.Math
 import java.util.*
 import kotlin.math.PI
 import kotlin.math.atan
 import kotlin.math.atan2
-import kotlin.math.pow
 
 class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(type, world), Ownable {
     private var owner: LivingEntity? = null
@@ -44,7 +43,7 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
         this.item = stack
         val normalizedLook = user.rotationVector.normalize()
         this.setPosition(user.eyePos)
-        this.velocity = normalizedLook.multiply(1.4)
+        this.velocity = normalizedLook.multiply(1.2)
     }
 
     override fun tick() {
@@ -54,12 +53,14 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
 
         if (this.velocity.lengthSquared() != 0.0) {
             this.yaw = (atan2(this.velocity.x, this.velocity.z) * 180 / PI).toFloat()
-            this.pitch = (atan(
-                this.velocity.y * MathHelper.inverseSqrt(
-                    this.velocity.x.pow(2) +
-                            this.velocity.y.pow(2)
-                )
-            ) * 180 / PI).toFloat()
+            val horizontalLen = this.velocity.horizontalLengthSquared()
+            if (this.velocity.horizontalLengthSquared() == 0.0) {
+                this.pitch = (MathHelper.clamp(this.velocity.y * 3, -1.0, 1.0) * 90).toFloat()
+            } else {
+                this.pitch = (atan(
+                    this.velocity.y * Math.invsqrt(horizontalLen)
+                ) * 180 / PI).toFloat()
+            }
         }
 
         if (this.isRemoved) {
@@ -89,7 +90,7 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
     private fun drop() {
         val item = ItemEntity(this.world, this.x, this.y, this.z, this.item)
         world.spawnEntity(item)
-        this.world.playSound(null, this.blockPos, SoundEvents.ENTITY_ARROW_HIT, SoundCategory.BLOCKS, 0.5f, 1.0f)
+        this.world.playSound(null, this.blockPos, ThrowingKnives.KNIFE_HIT_HARD, SoundCategory.BLOCKS, 0.3f, 1.0f)
 
         this.discard()
     }
