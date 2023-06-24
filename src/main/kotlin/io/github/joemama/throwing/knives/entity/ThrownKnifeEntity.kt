@@ -6,14 +6,11 @@ import net.minecraft.entity.*
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
-import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.projectile.ProjectileUtil
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
-import net.minecraft.util.ActionResult
-import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.EntityHitResult
 import net.minecraft.util.hit.HitResult
@@ -108,7 +105,15 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
     }
 
     private fun attemptUnstick() {
-        val bhr = this.world.raycast(RaycastContext(this.pos, this.pos.add(this.velocity), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this))
+        val bhr = this.world.raycast(
+            RaycastContext(
+                this.pos,
+                this.pos.add(this.velocity),
+                RaycastContext.ShapeType.COLLIDER,
+                RaycastContext.FluidHandling.NONE,
+                this
+            )
+        )
         val state = this.world.getBlockState(bhr.blockPos)
 
         if (state.isAir) {
@@ -133,7 +138,7 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
         val pos = bhr.blockPos
         val state = this.world.getBlockState(pos)
 
-       if (state.isIn(ThrowingKnives.SOFT_BLOCKS)) {
+        if (state.isIn(ThrowingKnives.SOFT_BLOCKS)) {
             if (!this.isOnWall) {
                 this.isOnWall = true
                 this.setPosition(bhr.pos)
