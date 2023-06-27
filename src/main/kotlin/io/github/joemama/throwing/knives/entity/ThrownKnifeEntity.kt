@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
+import net.minecraft.sound.SoundEvents
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.EntityHitResult
 import net.minecraft.util.hit.HitResult
@@ -142,6 +143,7 @@ class ThrownKnifeEntity(type: EntityType<out Entity>, world: World) : Entity(typ
             if (!this.isOnWall) {
                 this.isOnWall = true
                 this.setPosition(bhr.pos)
+                this.world.playSound(null, this.blockPos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 0.3f, 1.0f)
             }
         } else {
             this.drop()
