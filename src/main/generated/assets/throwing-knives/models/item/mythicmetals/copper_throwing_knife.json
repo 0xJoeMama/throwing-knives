@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "throwing-knives:item/mythicmetals/copper_throwing_knife"
+  }
+}

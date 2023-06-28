@@ -2,10 +2,13 @@ package io.github.joemama.throwing.knives
 
 import io.github.joemama.throwing.knives.entity.ThrownKnifeEntity
 import io.github.joemama.throwing.knives.item.ThrowingKnifeItem
+import io.github.joemama.throwing.knives.support.AdabraniumSupport
+import io.github.joemama.throwing.knives.support.MythicMetalsSupport
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.event.player.UseEntityCallback
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.block.Block
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
@@ -51,10 +54,21 @@ object ThrowingKnives : ModInitializer {
     val SOFT_BLOCKS: TagKey<Block> = TagKey.of(RegistryKeys.BLOCK, mkId("soft_blocks"))
 
     override fun onInitialize() {
-        Registry.register(Registries.ITEM, mkId("diamond_throwing_knife"), DIAMOND_THROWING_KNIFE)
         Registry.register(Registries.ITEM, mkId("iron_throwing_knife"), IRON_THROWING_KNIFE)
         Registry.register(Registries.ITEM, mkId("gold_throwing_knife"), GOLD_THROWING_KNIFE)
+        Registry.register(Registries.ITEM, mkId("diamond_throwing_knife"), DIAMOND_THROWING_KNIFE)
         Registry.register(Registries.ITEM, mkId("netherite_throwing_knife"), NETHERITE_THROWING_KNIFE)
+
+        // comment out "if statements" when using datagen task
+        if (FabricLoader.getInstance().isModLoaded(MythicMetalsSupport.MODID)) {
+            MythicMetalsSupport.register()
+            loggedModSupport(MythicMetalsSupport.MODID)
+        }
+        if (FabricLoader.getInstance().isModLoaded(AdabraniumSupport.MODID)) {
+            AdabraniumSupport.register()
+            loggedModSupport(AdabraniumSupport.MODID)
+        }
+
         Registry.register(Registries.ENTITY_TYPE, mkId("thrown_knife"), THROWN_KNIFE)
         Registry.register(Registries.SOUND_EVENT, mkId("knife_hit_hard"), KNIFE_HIT_HARD)
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register {
@@ -79,6 +93,10 @@ object ThrowingKnives : ModInitializer {
         }
 
         this.logger.info("Fully initialized Throwing Knives")
+    }
+
+    private fun loggedModSupport(externalModId: String) {
+        logger.info("Recognized $externalModId mod for Throwing Knives")
     }
 }
 

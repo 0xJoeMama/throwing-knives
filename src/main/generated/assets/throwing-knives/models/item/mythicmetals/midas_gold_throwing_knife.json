@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "throwing-knives:item/mythicmetals/midas_gold_throwing_knife"
+  }
+}

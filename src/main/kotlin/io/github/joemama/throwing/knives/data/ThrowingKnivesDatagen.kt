@@ -1,6 +1,8 @@
 package io.github.joemama.throwing.knives.data
 
 import io.github.joemama.throwing.knives.ThrowingKnives
+import io.github.joemama.throwing.knives.support.AdabraniumDatagen
+import io.github.joemama.throwing.knives.support.MythicMetalsDatagen
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
@@ -45,6 +47,9 @@ object ThrowingKnivesDatagen : DataGeneratorEntrypoint {
             items.register(ThrowingKnives.IRON_THROWING_KNIFE, Models.GENERATED)
             items.register(ThrowingKnives.GOLD_THROWING_KNIFE, Models.GENERATED)
             items.register(ThrowingKnives.NETHERITE_THROWING_KNIFE, Models.GENERATED)
+            MythicMetalsDatagen.generateItemModels(items)
+            AdabraniumDatagen.generateItemModels(items)
+
         }
     }
 
@@ -56,6 +61,8 @@ object ThrowingKnivesDatagen : DataGeneratorEntrypoint {
             builder.add(ThrowingKnives.NETHERITE_THROWING_KNIFE, "Netherite Throwing Knife")
             builder.add(ThrowingKnives.THROWN_KNIFE, "Thrown Knife")
             builder.add("sound.throwing-knives.knife_hit", "Hit hard surface")
+            MythicMetalsDatagen.generateTranslations(builder)
+            AdabraniumDatagen.generateTranslations(builder)
         }
     }
 }
