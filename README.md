@@ -2,7 +2,7 @@
 
 <h1 align="center">Made by JoeMama and ShiroJR<br>
 <h1>
-  	<a href="https://github.com/Creators-of-Create/Create/blob/master/LICENSE">
+  	<a href="https://github.com/0xJoeMama/throwing-knives/blob/master/LICENSE">
       <img src="https://img.shields.io/github/license/Creators-of-Create/Create?style=for-the-badge&labelWidth=15&color=900c3f" alt="License">
     </a>
     <a href="https://github.com/0xJoeMama/throwing-knives">
@@ -11,7 +11,7 @@
     <a href="https://www.curseforge.com/minecraft/mc-mods/">
       <img src="https://img.shields.io/badge/-CurseForge-gray?style=for-the-badge&logo=curseforge&labelColor=orange">
     </a>
-    <a href="https://modrinth.com/mod/nemuelch">
+    <a href="https://modrinth.com/">
       <img src="https://img.shields.io/badge/-modrinth-gray?style=for-the-badge&labelColor=green&labelWidth=15&logo=appveyor&logoColor=white">
     </a>
     <a href="https://github.com/0xJoeMama/throwing-knives/releases">
