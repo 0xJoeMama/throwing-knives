@@ -23,6 +23,8 @@
 
 The throwing knives mod for Minecraft allows players to craft and use throwable knives not only as a new weapon but, depending on the knife, also as a tool.
 These knives can deal damage to mobs and interact differently with blocks, making them a useful tool for survival and combat.
+
+Many Knives differ not only in their inflicted damage but may have other uses too. Some knives can be coated with potions, some can get enchanted with new and original enchantments and others support their own completely unique features.
 The throwing knives mod adds a new level of excitement and strategy to gameplay, as players must carefully aim their throws and conserve the limited supply of throwable goods.
 
 # Compatibility
