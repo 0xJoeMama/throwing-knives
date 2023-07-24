@@ -1,6 +1,6 @@
 <p align="center"><img src="https://github.com/Fabricators-of-Create/Create/assets/36027822/1888b4e2-041b-4b93-9b73-048b68be1f0e" alt="Logo" width="800"></p>
 
-<h1 align="center">Made by JoeMama and ShiroJR<br>
+<h1 align="center">Made by <a href="https://github.com/0xJoeMama">JoeMama</a> and <a href="https://github.com/JR1811">ShiroJR</a><br>     
 <h1>
   	<a href="https://github.com/0xJoeMama/throwing-knives/blob/master/LICENSE">
       <img src="https://img.shields.io/github/license/Creators-of-Create/Create?style=for-the-badge&labelWidth=15&color=900c3f" alt="License">
